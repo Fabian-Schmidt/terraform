@@ -224,6 +224,9 @@ type Operation struct {
 	// Workspace is the name of the workspace that this operation should run
 	// in, which controls which named state is used.
 	Workspace string
+
+	// FIXME
+	Concise bool
 }
 
 // HasConfig returns true if and only if the operation has a ConfigDir value
