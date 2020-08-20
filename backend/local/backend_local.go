@@ -179,7 +179,7 @@ func (b *Local) contextDirect(op *backend.Operation, opts terraform.ContextOpts)
 		rawVariables = b.interactiveCollectVariables(context.TODO(), op.Variables, config.Module.Variables, opts.UIInput)
 	}
 
-	variables, varDiags := backend.ParseVariableValues(rawVariables, config.Module.Variables)
+	variables, varDiags := backend.ParseVariableValues(rawVariables, config.Module.Variables, false)
 	diags = diags.Append(varDiags)
 	if diags.HasErrors() {
 		return nil, nil, diags

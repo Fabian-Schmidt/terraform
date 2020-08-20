@@ -55,7 +55,7 @@ func TestParseVariableValuesUndeclared(t *testing.T) {
 		},
 	}
 
-	gotVals, diags := ParseVariableValues(vv, decls)
+	gotVals, diags := ParseVariableValues(vv, decls, false)
 	for _, diag := range diags {
 		t.Logf("%s: %s", diag.Description().Summary, diag.Description().Detail)
 	}

@@ -222,7 +222,7 @@ func (b *Remote) hasExplicitVariableValues(op *backend.Operation) bool {
 	// goal here is just to make a best effort count of how many variable
 	// values are coming from -var or -var-file CLI arguments so that we can
 	// hint the user that those are not supported for remote operations.
-	variables, _ := backend.ParseVariableValues(op.Variables, config.Module.Variables)
+	variables, _ := backend.ParseVariableValues(op.Variables, config.Module.Variables, true)
 
 	// Check for explicitly-defined (-var and -var-file) variables, which the
 	// remote backend does not support. All other source types are okay,

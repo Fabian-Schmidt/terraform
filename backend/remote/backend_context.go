@@ -125,7 +125,8 @@ func (b *Remote) Context(op *backend.Operation) (*terraform.Context, statemgr.Fu
 		}
 
 		if op.Variables != nil {
-			variables, varDiags := backend.ParseVariableValues(op.Variables, config.Module.Variables)
+			variables, varDiags := backend.ParseVariableValues(op.Variables, config.Module.Variables, true)
+
 			diags = diags.Append(varDiags)
 			if diags.HasErrors() {
 				return nil, nil, diags

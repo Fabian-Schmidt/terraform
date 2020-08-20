@@ -41,7 +41,7 @@ type UnparsedVariableValue interface {
 // InputValues may be incomplete but will include the subset of variables
 // that were successfully processed, allowing for careful analysis of the
 // partial result.
-func ParseVariableValues(vv map[string]UnparsedVariableValue, decls map[string]*configs.Variable) (terraform.InputValues, tfdiags.Diagnostics) {
+func ParseVariableValues(vv map[string]UnparsedVariableValue, decls map[string]*configs.Variable, isRemote bool) (terraform.InputValues, tfdiags.Diagnostics) {
 	var diags tfdiags.Diagnostics
 	ret := make(terraform.InputValues, len(vv))
 
@@ -133,10 +133,18 @@ func ParseVariableValues(vv map[string]UnparsedVariableValue, decls map[string]*
 		}
 
 		if vc.Required() {
+			var detail string
+
+			if isRemote {
+				detail = fmt.Sprintf("The root module input variable %q is not set, and has no default value. Set it in your remote workspace.", name)
+			} else {
+				detail = fmt.Sprintf("The root module input variable %q is not set, and has no default value. Use a -var or -var-file command line argument to provide a value for this variable.", name)
+			}
+
 			diags = diags.Append(&hcl.Diagnostic{
 				Severity: hcl.DiagError,
 				Summary:  "No value for required variable",
-				Detail:   fmt.Sprintf("The root module input variable %q is not set, and has no default value. Use a -var or -var-file command line argument to provide a value for this variable.", name),
+				Detail:   detail,
 				Subject:  vc.DeclRange.Ptr(),
 			})
 
